@@ -3,8 +3,7 @@ from graphs import find_symmetries
 from cycle_notation import CycleNotation
 
 
-structure = None
-notations = None
+structure = []
 
 
 def print_menu():
@@ -26,34 +25,28 @@ def print_structure():
 
 
 def print_cycle():
-    if notations is None:
+    if not len(structure):
         print('\nCurrently unavailable\n')
         return
-    for item in notations:
+    for item in structure:
         print(item)
-
-
-def get_structure():
-    if structure is None:
-        return []
-    if isinstance(structure, Graph):
-        return [structure]
-    return structure
+        for sym in item.aut_group:
+            print(sym)
 
 
 def get_symmetries():
-    global structure, notations
-    for graph in get_structure():
+    global structure
+    for graph in structure:
         all_symmetries = []
         find_symmetries([], set(range(len(graph))), [set()] * len(graph), all_symmetries, graph)
-
-        notations = []
+        if isinstance(graph, BipartiteGraph):
+            all_symmetries = filter(lambda x: sum(x[:graph.m]) == sum(range(graph.m)), all_symmetries)
         for sym in all_symmetries:
-            notations.append(CycleNotation(sym))
+            graph.aut_group.append(CycleNotation(sym))
 
 
 def menu():
-    global structure, notations
+    global structure
     commands = {'1': generate_petersen, '2': generate_complete_graph, '3': generate_non_isomorphic_trees,
                 '4': generate_bipartite, '5': user_entered_graph, '6': get_symmetries, '8': print_cycle}
     while True:

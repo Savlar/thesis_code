@@ -8,7 +8,7 @@ g = [{3, 4}, {4}, {3}, {0, 2}, {0, 1}]
 m = 3
 n = 2
 
-# g = [{*range(m, m + n)} for _ in range(m)] + [{*range(m)} for _ in range(n)]
+g = [{*range(m, m + n)} for _ in range(m)] + [{*range(m)} for _ in range(n)]
 
 
 def find_symmetries(visited: List[int], not_visited: Set[int], graph: List[Set[int]], all_symmetries, g):
