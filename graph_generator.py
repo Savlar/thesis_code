@@ -46,8 +46,19 @@ def generate_bipartite():
 
 
 def user_entered_graph():
-    user_input = input('Enter graph').replace(' ', '')
-    entries = filter(lambda x: len(x), user_input.split(';'))
-    for item in entries:
-        vertex, adjacent = item.split('-')
-        print(vertex, adjacent)
+    try:
+        no_nodes = int(input('Enter number of vertices: '))
+        curr_vertex = 0
+        neighbours = []
+        while curr_vertex < no_nodes:
+            try:
+                user_input = input(f'Enter neighbours (separated by space) of vertex {curr_vertex}: ')
+                adj_vertices = set(filter(lambda x: 0 <= x < no_nodes and x != curr_vertex, map(int, user_input.split(' '))))
+                neighbours.append(adj_vertices)
+                curr_vertex += 1
+            except:
+                print('Error')
+        return [Graph(neighbours)]
+    except ValueError:
+        print('Please enter a number')
+        user_entered_graph()
