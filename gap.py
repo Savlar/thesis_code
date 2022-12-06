@@ -30,3 +30,10 @@ def get_non_isomorphic_trees(n):
         graphs.append(graph_data)
 
     return graphs
+
+
+def get_group_info(input_):
+    with open('input.g', 'a+') as file:
+        file.write(input_)
+    with open(os.devnull, 'w') as fnull:
+        subprocess.run('sudo gap --quitonbreak -b input.g -c "QUIT;"', shell=True, stdout=fnull, stderr=fnull)

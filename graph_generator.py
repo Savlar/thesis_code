@@ -1,4 +1,4 @@
-from geng import get_non_isomorphic_trees
+from gap import get_non_isomorphic_trees
 from graph import Graph, BipartiteGraph
 
 
