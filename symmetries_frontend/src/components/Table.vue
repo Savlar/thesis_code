@@ -1,51 +1,62 @@
 <template>
-  <v-table
-    density="compact"
-  >
-    <tbody>
-    <tr
-        v-for="row in dClass"
-        :key="row"
+  <v-lazy>
+    <v-table
+      density="compact"
     >
-      <td
-          v-for="cell in row"
-          :key="cell"
+      <tbody>
+      <tr
+          v-for="row in dClass"
+          :key="row"
       >
-        <v-icon
-          v-if="cell.is_group"
-          icon="mdi-information"
-          style="position: relative; float: right"
-          @click="findGroupInfo(cell.data)"
-        />
-        <TableSpan :cell-data="cell.data" />
-      </td>
-    </tr>
-    </tbody>
-    <v-dialog
-      v-model="dialog"
-      width="auto"
-    >
-      <v-card
-        class="mx-2 px-4"
-        max-width="400"
-      >
-        <v-card-title>
-          Group information
+        <td
+            v-for="cell in row"
+            :key="cell"
+        >
           <v-icon
-            icon="mdi-close"
-            @click="dialog = false"
-            class="ml-3"
+            v-if="cell.is_group"
+            icon="mdi-information"
             style="position: relative; float: right"
+            @click="findGroupInfo(cell.data)"
           />
-        </v-card-title>
-        <table-span :cell-data="selectedGroup" /> <br>
-        Group: {{ groupType }} <br>
-        Group description: {{ groupDesc }} <br>
-        Cardinality: {{ selectedGroup.length }} <br>
-        Identity: {{ identity }} <br>
-      </v-card>
-    </v-dialog>
-  </v-table>
+          <TableSpan :cell-data="cell.data" />
+        </td>
+      </tr>
+      </tbody>
+      <v-dialog
+        v-model="dialog"
+        width="auto"
+      >
+        <v-card
+          class="mx-2 px-4"
+          max-width="400"
+        >
+          <v-card-title>
+            Group information
+            <v-icon
+              icon="mdi-close"
+              @click="dialog = false"
+              class="ml-3"
+              style="position: relative; float: right"
+            />
+          </v-card-title>
+          <table-span :cell-data="selectedGroup" /> <br>
+          <div v-if="!this.loading">
+            <span style="font-weight: bold">Group:</span> {{ groupType }} <br>
+            <span style="font-weight: bold">Group description:</span> {{ groupDesc }} <br>
+            <span style="font-weight: bold">Order:</span> {{ selectedGroup.length }} <br>
+            <span style="font-weight: bold">Identity:</span> {{ identity }} <br>
+          </div>
+          <v-progress-circular
+            v-else
+            :size="60"
+            color="blue"
+            indeterminate
+            class="ma-3"
+          />
+        </v-card>
+      </v-dialog>
+    </v-table>
+  </v-lazy>
 </template>
 
 <script>
@@ -63,11 +74,13 @@ export default {
       selectedGroup: undefined,
       groupType: undefined,
       identity: undefined,
-      groupDesc: undefined
+      groupDesc: undefined,
+      loading: true
     }
   },
   methods: {
     findGroupInfo (data) {
+      this.loading = true
       this.groupDesc = undefined
       this.identity = undefined
       this.groupType = undefined
@@ -82,6 +95,7 @@ export default {
         this.groupType = res.data.groupType
         this.identity = res.data.identity
         this.groupDesc = res.data.groupDesc
+        this.loading = false
       }).catch(err => {
         console.log(err)
       })

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row
-      v-for="vertexCount in Array.from(this.sizes.keys()).reverse()"
+      v-for="vertexCount in Array.from(this.sizes.keys())"
       :key="vertexCount"
     >
       <v-col

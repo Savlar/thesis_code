@@ -44,14 +44,14 @@ export const customGraphStore = defineStore('custom', {
       }
       this.counter++
       this.lastChanged = index
-      this.interval = setInterval(this.getGraphVis, 3000)
+      this.interval = setInterval(this.getGraphVis, 500)
     },
     remove (index, value) {
       this.graphData[index].splice(this.graphData[index].indexOf(value), 1)
       this.graphData[value - 1].splice(this.graphData[value - 1].indexOf(index + 1), 1)
       this.counter++
       this.lastChanged = this.vertexCount + 1
-      this.interval = setInterval(this.getGraphVis, 1000)
+      this.interval = setInterval(this.getGraphVis, 500)
     },
     getGraphVis () {
       const payload = JSON.stringify(this.graphData)

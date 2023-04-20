@@ -10,7 +10,7 @@
         <v-slider
           v-model="customStore.vertexCount"
           :min="2"
-          :max="15"
+          :max="12"
           :step="1"
           @update:model-value="customStore.vertexCountChanged"
         />
@@ -79,6 +79,9 @@ export default {
   },
   methods: {
     htmlDecode
+  },
+  mounted () {
+    this.customStore.getGraphVis()
   }
 }
 </script>
