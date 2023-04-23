@@ -9,11 +9,6 @@
           Home
         </v-btn>
         <v-btn
-          to="/types"
-        >
-          Graph Types
-        </v-btn>
-        <v-btn
           to="/custom"
         >
           Custom
