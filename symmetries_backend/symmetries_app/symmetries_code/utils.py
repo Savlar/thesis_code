@@ -30,6 +30,7 @@ def read_graph_from_file():
         d = dict()
         for row in file:
             if row == '':
+                print(d)
                 graphs.append(Graph(d, aut_group=set()))
                 d = dict()
                 continue
@@ -246,12 +247,11 @@ def get_all_induced_subgraphs_test(g):
 
 def subgraphs_runtime_test():
     for _ in range(10):
-        vertices = random.randrange(10, 14)
-        g = generate_random_graph(vertices, random.random())
+        vertices = random.randrange(6, 7)
+        g = generate_random_graph(vertices, 0)
         print(g.data)
         get_all_induced_subgraphs_test(g)
 
 
 if __name__ == '__main__':
     subgraphs_runtime_test()
-    # create_large_graphs()

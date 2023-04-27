@@ -7,7 +7,7 @@ import time
 
 class PartialSymmetries:
 
-    def __init__(self, g, only_full_symmetries=False, use_timer=True):
+    def __init__(self, g, only_full_symmetries=False, use_timer=True, timeout_after=60):
         self.graph = g
         self.chunk = 0
         self.only_full_symmetries = only_full_symmetries
@@ -18,7 +18,7 @@ class PartialSymmetries:
         self.start = 0
         self.density = self.graph.density()
         self.use_timer = use_timer
-        self.timer_process = multiprocessing.Process(target=timer)
+        self.timer_process = multiprocessing.Process(target=timer, args=(timeout_after,))
         if self.use_timer:
             self.timer_process.start()
 
@@ -35,8 +35,8 @@ class PartialSymmetries:
         self.kill_timer()
 
     def get_data_for_k_vertex_subgraphs(self, k):
-        # type_id = 1 if (self.graph.vertex_count() < 11 or 0.2 > self.density or 0.8 < self.density) else 2
-        type_id = 2
+        type_id = 1 if (self.graph.vertex_count() < 11 or 0.2 > self.density or 0.8 < self.density) else 2
+        # type_id = 2
         for subgraph in self.graph.find_isomorphism_classes(k, type_id):
             subgraph.create_d_class()
             self.total_induced_subgraphs += 1

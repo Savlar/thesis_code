@@ -10,7 +10,7 @@
         <v-slider
           v-model="customStore.vertexCount"
           :min="2"
-          :max="12"
+          :max="10"
           :step="1"
           @update:model-value="customStore.vertexCountChanged"
         />

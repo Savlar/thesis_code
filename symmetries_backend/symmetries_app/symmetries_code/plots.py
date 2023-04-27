@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+import statistics
+from symmetries_app.symmetries_code.graph import Graph
 from symmetries_app.symmetries_code.runtime_comparison import get_runtime_data
-from symmetries_app.symmetries_code.utils import partial_symmetries_info
+from symmetries_app.symmetries_code.utils import partial_symmetries_info, totals, single_edge_partial_symmetries
 
 PARTIAL_SYMMETRIES_IMG_DIR = 'all_graphs/partial_symmetries_images/'
 
@@ -21,6 +22,21 @@ def time_comparison():
         plt.savefig('tests/lang_comparison.jpg', dpi=1000)
 
 
+def cpython_pypy_comparison():
+    graphs = {'10,18': [0.419, 0.927], '10,25': [0.388, 0.931], '11,17': [1.067, 3.589], '11,35': [0.962, 2.834], '12,17': [3.942, 15.407],
+              '12,28': [1.667, 5.152], '13,31': [4.229, 14.546], '13,37': [3.500, 11.069], '14,37': [9.525, 32.085]}
+    x_labels = [r'$G_{' + x + '}$' for x in graphs.keys()]
+    create_scatter_graph(x_labels, [list(x[0] for x in graphs.values()), list(x[1] for x in graphs.values())],
+                ['PyPy', 'CPython'], filename='tests/cpython_pypy_comparison.jpg')
+
+
+def degree_filtering_time_save():
+    graphs = {'0.14': [0.917, 0.925], '0.72': [0.515, 0.278], '0.8': [0.864, 0.585], '0.61': [0.287, 0.11], '0.62': [0.551, 0.382],
+              '0.70': [0.708, 0.334], '0.82': [0.961, 0.906], '13,37': [3.500, 11.069], '14,37': [9.525, 32.085]}
+    create_scatter_graph(graphs.keys(), [list(x[0] for x in graphs.values()), list(x[1] for x in graphs.values())],
+                ['df / nf (%)', 'dtf / nf (%)'], filename='tests/df_dtf_time_save.jpg')
+
+
 def kotlin_python_partial_sym_comparison_minimal_asym():
     graphs = {'X1': [0.050, 0.028], 'X2': [0.042, 0.018], 'X3': [0.039, 0.012], 'X4': [0.031, 0.013], 'X9': [0.132, 0.040],
               'X10': [0.176, 0.034], 'X11': [0.169, 0.030], 'X15': [1.175, 0.071], 'X16': [1.235, 0.084]}
@@ -35,10 +51,10 @@ def kotlin_python_partial_sym_comparison_random():
     create_scatter_graph(x_labels, [list(x[0] for x in graphs.values()), list(x[1] for x in graphs.values())],
                          legend=['Results in [Slá21]', 'Our results'], filename='tests/comparison_random_slavik.jpg')
 
-def create_scatter_graph(x, y, legend=None, dpi=1000, filename='test.jpg'):
+def create_scatter_graph(x, y, xlabel='graph', ylabel='time (s)', legend=None, dpi=1000, filename='test.jpg'):
     plt.figure(figsize=(5, 5))
-    plt.xlabel('graph')
-    plt.ylabel('time (s)')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
     for values in y:
         plt.scatter(x, values)
     plt.legend(legend)
@@ -70,11 +86,34 @@ def create_partial_symmetries_graph(n, include_complete=False):
     max_edges = (n * (n - 1) // 2)
     plt.xticks(range(start, max_edges + 1, step))
     data = partial_symmetries_info(n, include_complete=include_complete)
-    for key in sorted(list(data.keys()))[:max_edges // 2 + 1]:
-        partial_symmetries = list(set(x.total_partial_symmetries for x in data[key]))
-        plt.scatter([key] * len(partial_symmetries), partial_symmetries)
-        plt.scatter([max_edges - key] * len(partial_symmetries), partial_symmetries)
+    values = []
+    for key in data.keys():
+        for value in data[key]:
+            values.append(value.total_partial_symmetries)
+    print(int(statistics.mean(values)))
+    return
+    edges = []
+    for key in sorted(list(data.keys()))[:max_edges // 2]:
+        partial_symmetries = list(x.total_partial_symmetries for x in data[key])
+        values.extend(partial_symmetries)
+        values.extend(partial_symmetries)
+        edge1 = [key] * len(partial_symmetries)
+        edges.extend(edge1)
+        edge2 = [max_edges - key] * len(partial_symmetries)
+        edges.extend(edge2)
+        print(key, len(partial_symmetries))
+        counts = np.bincount(partial_symmetries)
+        plt.scatter(edge1, partial_symmetries, s=15 * counts[partial_symmetries])
+        plt.scatter(edge2, partial_symmetries, s=15 * counts[partial_symmetries])
+
+    mean = statistics.mean(values)
+    plt.plot(range(start, max_edges + 1), [mean] * (max_edges - start + 1), 'r--', label='mean')
+    ticks = plt.yticks()[0]
+    ticks = np.append(ticks[2:], mean)
+    plt.yticks(ticks)
     img_type = 'all' if include_complete else 'minus_complete'
+    plt.legend()
+
     plt.savefig(PARTIAL_SYMMETRIES_IMG_DIR + str(n) + '_vertices_' + img_type + '.jpg', dpi=1000)
 
 
@@ -115,8 +154,36 @@ def create_runtime_comparison_graph():
     ax.plot(range(len(labels)), [no(i) for i in range(len(labels))], '--', color='limegreen')
     ax.plot(range(len(labels)), [deg(i) for i in range(len(labels))], '--', color='orange')
     ax.plot(range(len(labels)), [deg_tri(i) for i in range(len(labels))], '--', color='cornflowerblue')
-
     plt.savefig('tests/graph_filtering_runtime_comparison.jpg', dpi=1000)
+
+def density_time_save():
+    data = get_runtime_data()
+    dfvsnf = []
+    dtfvsnf = []
+    densities = []
+    for graph in data:
+        runtimes = data[graph]
+        density = runtimes.graph.density()
+        times = [runtimes.runtime_data['deg_filter'].time, runtimes.runtime_data['deg_tri_filter'].time, runtimes.runtime_data['no_filter'].time]
+        if runtimes.graph.vertex_count() > 11:
+            densities.append(density)
+            dfvsnf.append((1 - (times[0] / times[2])) * 100)
+            dtfvsnf.append((1 - (times[1] / times[2])) * 100)
+    create_scatter_graph(densities, [dfvsnf, dtfvsnf],
+                         xlabel='density', ylabel='time saved %', legend=['df / nf', 'dtf / nf'], filename='tests/density_filter_type_comparison')
+
+
+def mean_values_prediction():
+    values = [28, 109, 404, 1316, 3688, 9248, 22154]
+    predictions = [22154, 50264, 109414, 239909, 524116, 1129065, 2454617, 5455708, 132240988]
+    plt.xlabel('vertices')
+    plt.ylabel('mean partial symmetries')
+    plt.xticks(range(3, 17))
+    plt.plot(range(3, 10), [values[i] for i in range(7)], color='blue')
+    plt.plot(range(9, 17), [predictions[i] for i in range(8)], '--', color='red')
+    plt.legend(['mean', 'predicted mean'])
+    plt.ylim(-100000, 5500000)
+    plt.savefig('tests/mean_values_prediction.png', dpi=1000)
 
 
 if __name__ == '__main__':
@@ -124,4 +191,7 @@ if __name__ == '__main__':
     # kotlin_python_partial_sym_comparison_random()
     # create_partial_symmetries_graph(10)
     # create_runtime_comparison_graph()
-    create_partial_symmetries_max_values_graph(8)
+    # create_partial_symmetries_max_values_graph(8)
+    # cpython_pypy_comparison()
+    # density_time_save()
+    mean_values_prediction()

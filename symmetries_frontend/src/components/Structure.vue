@@ -11,6 +11,7 @@
     :set="res.show = false"
     :index="i"
     style="margin-bottom: 3%;"
+    ref="scrollContainer"
   >
     <v-col>
       <div

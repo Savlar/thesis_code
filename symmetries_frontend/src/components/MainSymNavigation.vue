@@ -35,6 +35,22 @@ export default {
     scrollToTable (tableId) {
       const el = document.getElementById(tableId)
       el.scrollIntoView()
+      setTimeout(() => {
+        if (!this.isElementInViewport(el)) {
+          this.scrollToTable(tableId)
+        } else {
+          el.scrollIntoView()
+        }
+      }, 400)
+    },
+    isElementInViewport (el) {
+      const rect = el.getBoundingClientRect()
+      return (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+      )
     }
   }
 }
