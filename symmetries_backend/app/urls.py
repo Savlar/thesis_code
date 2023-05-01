@@ -16,12 +16,12 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-# from symmetries_app import urls
+from symmetries_app import urls
 
 router = DefaultRouter()
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    # path('api/', include(urls)),
+    path('api/', include(urls)),
     path('admin/', admin.site.urls),
 ]
