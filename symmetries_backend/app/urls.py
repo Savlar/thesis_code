@@ -22,6 +22,6 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('api/', include(router.urls)),
-    path('api/', include(urls)),
+    # path('api/', include(urls)),
     path('admin/', admin.site.urls),
 ]
