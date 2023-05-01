@@ -19,7 +19,6 @@ executing==1.2.0
 Flask==2.2.3
 Flask-Cors==3.0.10
 greenlet==0.4.13
-hpy==0.0.4.dev179+g9b5d200
 idna==3.4
 importlib-metadata==6.0.0
 ipython==8.10.0
