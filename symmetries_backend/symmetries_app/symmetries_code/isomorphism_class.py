@@ -59,4 +59,4 @@ class IsomorphismClass:
                 h_class = []
                 for ran in graph.aut_group:
                     h_class.append(str(PartialPermutation(dom, ran)))
-                self.d_class[-1].append({'data': h_class, 'is_group': i == j})
+                self.d_class[-1].append({'data': h_class, 'is_group': i == j and len(dom) > 1})

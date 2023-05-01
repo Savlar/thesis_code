@@ -86,6 +86,8 @@ class Graph:
         return (v * (v - 1)) // 2
 
     def density(self):
+        if self.edge_count() == 0:
+            return 0
         return self.edge_count() / self.total_possible_edges()
 
     def triangles(self, vertex):
@@ -226,7 +228,7 @@ class Graph:
         if 'x' in self.group_type:
             types = [x.strip() for x in self.group_type.split('x')]
         group_types = {'C': 'cyclic group', 'S': 'symmetric group', 'D': 'dihedral group', '1': 'error'}
-        group_sizes = {'C': ' of size ', 'S': ' of degree ', 'D': ' of size ', '1': 'error'}
+        group_sizes = {'C': ' of order ', 'S': ' of degree ', 'D': ' of order ', '1': 'error'}
         d = []
         for t in types:
             desc = ''

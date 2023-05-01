@@ -28,8 +28,8 @@ export default {
   name: 'HomeView',
   data () {
     return {
-      asymmetricGraphs: ['X1,X8', 'X2,X7', 'X3,X6', 'X4,X5', 'X9,X14', 'X10,X13', 'X11,X12', 'X15,X18', 'X16,X17'],
-      selectedAsymmetricGraph: 'X1,X8',
+      asymmetricGraphs: ['X1', 'X2', 'X3', 'X4', 'X5', 'X6', 'X7', 'X8', 'X9', 'X10', 'X11', 'X12', 'X13', 'X14', 'X15', 'X16', 'X17', 'X18'],
+      selectedAsymmetricGraph: 'X1',
       counter: 0,
       vis: ''
     }

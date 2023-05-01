@@ -71,7 +71,8 @@ class Path:
         self.cycle_notation = list(path)
 
     def __str__(self):
-        return '[' + ','.join(map(str, self.cycle_notation)) + ')'
+        # return '[' + ','.join(map(str, self.cycle_notation)) + ')'
+        return '[' + ''.join(map(str, self.cycle_notation)) + ')'
 
 
 def find_start(dom, ran, unchecked):
