@@ -42,7 +42,6 @@ pydantic==1.10.5
 Pygments==2.14.0
 pytz==2022.7.1
 pyvis==0.3.1
-readline==6.2.4.1
 replicate==0.5.1
 requests==2.28.2
 six==1.16.0
