@@ -16,11 +16,9 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-# from courses_app.viewsets.exercise_viewset import ExerciseViewSet
 from symmetries_app import urls
 
 router = DefaultRouter()
-# router.register(r'exercise', ExerciseViewSet, basename='exercise')
 
 urlpatterns = [
     path('api/', include(router.urls)),

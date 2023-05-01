@@ -15,7 +15,7 @@
     </v-row>
   </v-container>
   <v-container>
-    <structure :url="'/api/asymgraph/' + this.selectedAsymmetricGraph + '/'" :params="{}" :refresh="counter" />
+    <structure :url="'api/asymgraph/' + this.selectedAsymmetricGraph + '/'" :params="{}" :refresh="counter" />
   </v-container>
 </template>
 
