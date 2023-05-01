@@ -38,7 +38,7 @@
 
 <script>
 
-import TopScroll from '@/components/TopScroll.vue'
+import TopScroll from '@/components/TopScroll'
 
 export default {
   name: 'App',

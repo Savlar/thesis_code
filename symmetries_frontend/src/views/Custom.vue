@@ -46,7 +46,7 @@
   </v-container>
   <v-container>
     <structure-component
-      url="http://127.0.0.1:8000/api/customsym/"
+      url="api/customsym/"
       :params="{
         data: JSON.stringify(this.customStore.graphData)
       }"

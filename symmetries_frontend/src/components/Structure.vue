@@ -45,6 +45,7 @@ import { htmlDecode } from '@/functions/functions'
 import TableComponent from '@/components/Table'
 import MainSymNavigation from '@/components/MainSymNavigation'
 import GraphVis from '@/components/GraphVis'
+import URL_BASE from '@/constants'
 
 export default {
   name: 'StructureComponent',
@@ -70,7 +71,7 @@ export default {
       this.sizes.clear()
       this.errorMsg = ''
       this.lastProcessedChunk = -1
-      axios.get(this.url, {
+      axios.get(URL_BASE + this.url, {
         params: this.params,
         onDownloadProgress: (event) => {
           let nextChunkStart = 0
@@ -86,7 +87,6 @@ export default {
             }
             this.responses.push(parsedInput)
             this.lastProcessedChunk += 1
-            console.log('chunk received')
             for (const item of this.responses) {
               if (!this.sizes.has(item.vertices)) {
                 this.sizes.set(item.vertices, new Set([item.edges]))

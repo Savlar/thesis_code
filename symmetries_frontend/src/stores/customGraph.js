@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
+import URL_BASE from '@/constants'
 
 export const customGraphStore = defineStore('custom', {
   state: () => ({
@@ -55,7 +56,7 @@ export const customGraphStore = defineStore('custom', {
     },
     getGraphVis () {
       const payload = JSON.stringify(this.graphData)
-      axios.get('http://127.0.0.1:8000/api/graphvis/', {
+      axios.get(URL_BASE + 'api/graphvis/', {
         params: {
           data: payload,
           vertexCount: this.vertexCount

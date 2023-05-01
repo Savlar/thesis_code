@@ -62,6 +62,7 @@
 <script>
 import axios from 'axios'
 import TableSpan from '@/components/TableSpan'
+import URL_BASE from '@/constants'
 
 export default {
   name: 'TableComponent',
@@ -87,7 +88,7 @@ export default {
       this.dialog = true
       this.selectedGroup = data
       const payload = JSON.stringify(data)
-      axios.get('http://127.0.0.1:8000/api/groupinfo/', {
+      axios.get(URL_BASE + 'api/groupinfo/', {
         params: {
           data: payload
         }

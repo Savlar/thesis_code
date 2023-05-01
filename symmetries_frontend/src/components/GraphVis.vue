@@ -17,6 +17,7 @@
 <script>
 import axios from 'axios'
 import { htmlDecode } from '@/functions/functions'
+import URL_BASE from '@/constants'
 
 export default {
   name: 'GraphVis',
@@ -28,8 +29,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.graph)
-    axios.get('http://127.0.0.1:8000/api/vis/', {
+    axios.get(URL_BASE + 'api/vis/', {
       params: {
         data: JSON.stringify(this.graph)
       }

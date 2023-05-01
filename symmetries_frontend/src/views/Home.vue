@@ -15,7 +15,7 @@
     </v-row>
   </v-container>
   <v-container>
-    <structure :url="'http://127.0.0.1:8000/api/asymgraph/' + this.selectedAsymmetricGraph + '/'" :params="{}" :refresh="counter" />
+    <structure :url="'/api/asymgraph/' + this.selectedAsymmetricGraph + '/'" :params="{}" :refresh="counter" />
   </v-container>
 </template>
 
@@ -23,6 +23,7 @@
 import { htmlDecode } from '@/functions/functions'
 import Structure from '@/components/Structure.vue'
 import axios from 'axios'
+import URL_BASE from '@/constants'
 
 export default {
   name: 'HomeView',
@@ -41,8 +42,7 @@ export default {
     htmlDecode,
     getGraphVis () {
       this.counter++
-      console.log('here')
-      axios.get('http://127.0.0.1:8000/api/asym_vis/', {
+      axios.get(URL_BASE + 'api/asym_vis/', {
         params: {
           data: this.selectedAsymmetricGraph
         }
