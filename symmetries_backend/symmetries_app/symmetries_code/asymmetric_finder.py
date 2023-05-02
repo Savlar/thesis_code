@@ -47,9 +47,9 @@ def asymmetric_non_isomorphic(graphs):
     return True
 
 
-def has_asymmetric_depth(g, depth):
+def has_asymmetricity_level(g, depth):
     """
-    returns True is graph 'g' has asymmetric depth 'depth'
+    returns True is graph 'g' has asymmetricity level 'depth'
     """
     for i in reversed(range(depth + 1)):
         asym, subgraphs = induced_asymmetric(g, len(g) - i)
@@ -58,9 +58,9 @@ def has_asymmetric_depth(g, depth):
     return True
 
 
-def find_asym_d_max(g):
+def find_asym_d(g):
     """
-    returns the maximal asymmetric depth for graph 'g'
+    returns the asymmetric depth for graph 'g'
     """
     depth = -1
     while True:
@@ -70,21 +70,21 @@ def find_asym_d_max(g):
         depth += 1
 
 
-def max_depth_for_n_vertices(n):
+def asym_depth_for_n_vertices(n):
     """
-    returns the maximal asymmetric depth any graph with 'n' vertices can have
+    returns the asymmetric depth any graph with 'n' vertices can have
     Parameters
     ----------
     n - number of vertices of a graph
 
     Returns
     -------
-    cur_max; graphs_with_max_depth - maximal asymmetric depth; a list of graphs with asymmetric depth 'cur_max'
+    cur_max; graphs_with_max_depth - asymmetric depth; a list of graphs with asymmetric depth 'cur_max'
     """
     cur_max = 0
     graphs_with_max_depth = []
     for g in read_gap_file(n):
-        max_depth = find_asym_d_max(g)
+        max_depth = find_asym_d(g)
         if max_depth == cur_max:
             graphs_with_max_depth.append(g)
         elif max_depth > cur_max:
@@ -107,12 +107,12 @@ def add_vertex_to_asymmetric(add_to_vertices, from_depth, to_depth):
                     for vertex in combs:
                         data_copy.setdefault(new_vertex, set()).add(vertex)
                         data_copy[vertex].add(new_vertex)
-                    if has_asymmetric_depth(Graph(data_copy, aut_group=set()), to_depth):
+                    if has_asymmetricity_level(Graph(data_copy, aut_group=set()), to_depth):
                         with open('all_graphs/asymmetric/asym_d_' + str(to_depth) + '_' + str(add_to_vertices + 1) + 'v.txt', 'a') as output:
                             output.write(str(data_copy) + '\n')
 
 
-def find_asym_d_max_random(only_save_depth_gte=4):
+def find_asym_d_random(only_save_depth_gte=4):
     """
     finds the maximal asymmetric depth for randomly generated graphs,
     only saves graphs with maximal asymmetric depth >= 'only_save_depth_gte'
@@ -120,7 +120,7 @@ def find_asym_d_max_random(only_save_depth_gte=4):
     while True:
         vertices = random.randrange(25, 31)
         g = generate_random_graph(vertices)
-        asym_d_max = find_asym_d_max(g)
+        asym_d_max = find_asym_d(g)
         if asym_d_max >= only_save_depth_gte:
             with open('all_graphs/asymmetric/random_maximal_asym_d.txt', 'a') as file:
                 file.write(str(asym_d_max) + ' -> ' + str(g.data) + '\n')
@@ -130,4 +130,4 @@ if __name__ == '__main__':
     # depth, graphs = max_depth_for_n_vertices(9)
     # print(depth, len(graphs))
     # add_vertex_to_asymmetric(11, 1, 2)
-    find_asym_d_max_random(5)
+    find_asym_d_random(5)
