@@ -6,7 +6,7 @@
       :id="'customSelect' + id"
       :items="choices"
       multiple
-      @update:model-value="customStore.update(id)"
+      @update:model-value="update(id)"
     />
     <v-row>
       <div
@@ -24,7 +24,7 @@
           size="small"
           icon="mdi-close"
           style="position: relative; top: -40%; right: 25%"
-          @click="customStore.remove(id, neighbour)"
+          @click="remove(id, neighbour)"
         >
         </v-btn>
       </div>
@@ -47,6 +47,16 @@ export default {
         return this.customStore.counter
       }
       return this.customStore.lastValue
+    }
+  },
+  methods: {
+    update (id) {
+      this.$emit('reset')
+      this.customStore.update(id)
+    },
+    remove (id, neighbour) {
+      this.$emit('reset')
+      this.customStore.remove(id, neighbour)
     }
   }
 }

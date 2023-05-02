@@ -4,6 +4,20 @@
   >
     {{ errorMsg }}
   </div>
+  <v-container
+    v-if="value > 0 && value < 95"
+  >
+    <v-row justify="center">
+      <v-progress-circular
+        :model-value="value"
+        size="100"
+        width="20"
+        color="blue"
+      >
+        {{ value }}
+      </v-progress-circular>
+    </v-row>
+  </v-container>
   <main-sym-navigation :sizes="sizes" />
   <v-row
     v-for="(res, i) in responses"
@@ -50,24 +64,33 @@ import URL_BASE from '@/constants'
 export default {
   name: 'StructureComponent',
   components: { GraphVis, MainSymNavigation, TableComponent },
-  props: ['url', 'params', 'refresh'],
+  props: ['url', 'params', 'refresh', 'vertices', 'reset'],
   data () {
     return {
       responses: [],
       sizes: new Map(),
       lastProcessedChunk: 0,
-      errorMsg: ''
+      errorMsg: '',
+      loading: false,
+      value: 0
     }
   },
   watch: {
     refresh () {
       this.getAsymmetricGraphPartialSymmetries()
+    },
+    reset () {
+      this.responses = []
+      this.value = 0
+      this.sizes.clear()
+      this.errorMsg = ''
     }
   },
   methods: {
     htmlDecode,
     getAsymmetricGraphPartialSymmetries () {
       this.responses = []
+      this.value = 0
       this.sizes.clear()
       this.errorMsg = ''
       this.lastProcessedChunk = -1
@@ -94,8 +117,10 @@ export default {
                 this.sizes.get(item.vertices).add(item.edges)
               }
             }
+            this.value += 100 / this.vertices
           }
-        } }
+        }
+      }
       )
     }
   }

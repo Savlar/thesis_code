@@ -12,7 +12,7 @@
           :min="2"
           :max="10"
           :step="1"
-          @update:model-value="customStore.vertexCountChanged"
+          @update:model-value="changedGraph"
         />
       </v-col>
     </v-row>
@@ -24,6 +24,7 @@
       <neighbour-selector
         :id="key"
         :choices="[...Array(customStore.vertexCount).keys()].filter(i => i !== key).map(i => i + 1)"
+        @reset="reset++"
       />
     </v-container>
     <v-row>
@@ -51,6 +52,8 @@
         data: JSON.stringify(this.customStore.graphData)
       }"
       :refresh="counter"
+      :vertices="customStore.vertexCount"
+      :reset="reset"
     />
   </v-container>
 </template>
@@ -70,7 +73,8 @@ export default {
       responses: [],
       sizes: new Map(),
       lastProcessedChunk: 0,
-      counter: 0
+      counter: 0,
+      reset: 0
     }
   },
   computed: {
@@ -78,7 +82,11 @@ export default {
     ...mapStores(customGraphStore)
   },
   methods: {
-    htmlDecode
+    htmlDecode,
+    changedGraph () {
+      this.reset++
+      this.customStore.vertexCountChanged()
+    }
   },
   mounted () {
     this.customStore.getGraphVis()
