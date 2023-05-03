@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <v-toolbar title="Partial symmetries of graphs" border>
+      <v-toolbar border>
+        <v-toolbar-title @click="$router.push('/')" style="cursor: pointer; width: auto">Partial automorphisms of graphs</v-toolbar-title>
         <v-spacer />
         <v-btn
           to="/"
@@ -21,7 +22,7 @@
       color="dark"
       border
       class="mt-1"
-      style="max-height: 6%"
+      style="max-height: 6%; width: 100%; position: fixed; bottom: 0"
     >
       <v-row>
         <v-col

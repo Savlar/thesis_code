@@ -41,7 +41,7 @@
         class="mt-3"
         color="blue"
       >
-        Get partial symmetries
+        Get partial automorphisms
       </v-btn>
     </v-row>
   </v-container>

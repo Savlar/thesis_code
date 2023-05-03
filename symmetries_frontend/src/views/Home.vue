@@ -1,4 +1,25 @@
 <template>
+  <v-snackbar
+    v-model="vercelWarningSnackbar"
+    multi-line
+    timeout="15000"
+  >
+    This version hosted on Vercel has the following limitations:
+      <ul>
+        <li>Group information is disabled, GAP cannot be run on this hosting</li>
+        <li>Functions are automatically timed out after 10s due to AWS limitations</li>
+        <li>Finding symmetries normally uses HttpStreamingResponse, which is disabled here</li>
+      </ul>
+    <template v-slot:actions>
+      <v-btn
+        color="red"
+        variant="text"
+        @click="vercelWarningSnackbar = false"
+      >
+        OK
+      </v-btn>
+    </template>
+  </v-snackbar>
   <v-container>
     <v-row>
       <v-col>
@@ -34,7 +55,8 @@ export default {
       selectedAsymmetricGraph: 'X1',
       counter: 0,
       vis: '',
-      selectedVertices: 6
+      selectedVertices: 6,
+      vercelWarningSnackbar: true
     }
   },
   components: {
