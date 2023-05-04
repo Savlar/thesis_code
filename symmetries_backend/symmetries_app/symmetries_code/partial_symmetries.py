@@ -49,7 +49,7 @@ class PartialSymmetries:
 
     def empty_permutation(self):
         self.total_partial_symmetries += 1
-        yield json.dumps({'chunk': self.chunk, 'result': [[{'data': ['id'], 'is_group': False}]],
+        yield json.dumps({'chunk': self.chunk, 'result': [[{'data': ['∅'], 'is_group': False}]],
                           'vertices': 0, 'edges': 0, 'size': 1, 'graph': None})
 
     def get_number_of_partial_symmetries(self):

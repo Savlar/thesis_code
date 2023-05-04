@@ -12,12 +12,12 @@
             v-for="cell in row"
             :key="cell"
         >
-<!--          <v-icon-->
-<!--            v-if="cell.is_group"-->
-<!--            icon="mdi-information"-->
-<!--            style="position: relative; float: right"-->
-<!--            @click="findGroupInfo(cell.data)"-->
-<!--          />-->
+          <v-icon
+            v-if="cell.is_group"
+            icon="mdi-information"
+            style="position: relative; float: right"
+            @click="findGroupInfo(cell.data)"
+          />
           <TableSpan :cell-data="cell.data" />
         </td>
       </tr>

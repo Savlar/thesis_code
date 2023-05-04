@@ -11,7 +11,10 @@ class Cycle:
         min_index = values.index(min(values))
         data = values[min_index:] + values[:min_index]
         values = tuple(data)
+        # if len(values) == 1:
+        #     values = '(' + str(values[0]) + ')'
         return str(values).replace(',', '').replace(' ', '')
+        # return str(values).replace(' ', '')
 
     def __len__(self):
         return sum(len(x) for x in self.cycle_notation)

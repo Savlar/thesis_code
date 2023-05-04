@@ -1,6 +1,6 @@
 import math
 
-from networkx import vf2pp_is_isomorphic
+from networkx import vf2pp_is_isomorphic, vf2pp_all_isomorphisms
 
 from symmetries_app.symmetries_code.partial_permutation import PartialPermutation
 
@@ -52,11 +52,13 @@ class IsomorphismClass:
         """
         creates the eggbox diagram for this isomorphism class
         """
-        vertex_combinations = list(x.vertices() for x in self.graphs)
-        for i, graph in enumerate(self.graphs):
+        for g1 in self.graphs:
             self.d_class.append([])
-            for j, dom in enumerate(vertex_combinations):
+            for g2 in self.graphs:
                 h_class = []
-                for ran in graph.aut_group:
+                for mapping in vf2pp_all_isomorphisms(g2.nx_rep, g1.nx_rep):
+                    dom = tuple(mapping.keys())
+                    ran = tuple(mapping[key] for key in dom)
+                    print(dom, ran, mapping)
                     h_class.append(str(PartialPermutation(dom, ran)))
-                self.d_class[-1].append({'data': h_class, 'is_group': i == j and len(dom) > 1})
+                self.d_class[-1].append({'data': h_class, 'is_group': set(g1.vertices()) == set(g2.vertices()) and len(h_class) > 1})
