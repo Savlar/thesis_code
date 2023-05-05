@@ -40,14 +40,3 @@ def generate_random_graph(v, density=None):
             data[start].add(end)
             data[end].add(start)
     return Graph(data, aut_group=set())
-
-
-if __name__ == '__main__':
-    g = generate_random_graph(500, 0.7)
-    h = generate_random_graph(500, 0.6)
-    start = time.time()
-    iso = g.is_isomorphic(h)
-    print(time.time() - start)
-    start = time.time()
-    tr = g.triangle_sequence()
-    print(time.time() - start)

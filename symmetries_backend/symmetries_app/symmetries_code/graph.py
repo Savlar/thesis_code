@@ -162,9 +162,9 @@ class Graph:
         function that finds all symmetries of the graph and sorts it and return a tuple 't',
         so that the i-th index in 't' means the vertex i-th vertex in the vertex set gets mapped to vertex t[i]
         """
-        self.aut_group = set()
+        self.aut_group = list()
         for sym in vf2pp_all_isomorphisms(self.nx_rep, self.nx_rep):
-            self.aut_group.add(tuple(sym[key] for key in sorted(sym)))
+            self.aut_group.append(tuple(sym[key] for key in sorted(sym)))
 
     def is_asymmetric(self):
         total = 0

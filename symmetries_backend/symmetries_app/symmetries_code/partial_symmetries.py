@@ -35,8 +35,8 @@ class PartialSymmetries:
         self.kill_timer()
 
     def get_data_for_k_vertex_subgraphs(self, k):
-        type_id = 1 if (self.graph.vertex_count() < 11 or 0.2 > self.density or 0.8 < self.density) else 2
-        # type_id = 2
+        # type_id = 1 if (self.graph.vertex_count() < 11 or 0.2 > self.density or 0.8 < self.density) else 2
+        type_id = 2
         for subgraph in self.graph.find_isomorphism_classes(k, type_id):
             subgraph.create_d_class()
             self.total_induced_subgraphs += 1

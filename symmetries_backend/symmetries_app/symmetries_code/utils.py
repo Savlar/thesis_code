@@ -30,7 +30,6 @@ def read_graph_from_file():
         d = dict()
         for row in file:
             if row == '':
-                print(d)
                 graphs.append(Graph(d, aut_group=set()))
                 d = dict()
                 continue
@@ -254,4 +253,5 @@ def subgraphs_runtime_test():
 
 
 if __name__ == '__main__':
-    subgraphs_runtime_test()
+    run_tests(clear_output_file=True)
+    # subgraphs_runtime_test()

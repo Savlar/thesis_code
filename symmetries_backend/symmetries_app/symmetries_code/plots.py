@@ -71,7 +71,6 @@ def create_partial_symmetries_max_values_graph(n):
         psym_max = max(info[key], key=lambda x: x.total_partial_symmetries)
         if spacing is None:
             spacing = psym_max.total_partial_symmetries * 0.03
-        print(key, psym_max.total_partial_symmetries)
         plt.scatter(key, psym_max.total_partial_symmetries)
         y_location = psym_max.total_partial_symmetries + spacing * 0.8 if key % 2 == 1 else psym_max.total_partial_symmetries - spacing * 1.5
         plt.annotate(str(psym_max.total_partial_symmetries), (key - 0.45, y_location), fontsize=6)
@@ -87,11 +86,6 @@ def create_partial_symmetries_graph(n, include_complete=False):
     plt.xticks(range(start, max_edges + 1, step))
     data = partial_symmetries_info(n, include_complete=include_complete)
     values = []
-    for key in data.keys():
-        for value in data[key]:
-            values.append(value.total_partial_symmetries)
-    print(int(statistics.mean(values)))
-    return
     edges = []
     for key in sorted(list(data.keys()))[:max_edges // 2]:
         partial_symmetries = list(x.total_partial_symmetries for x in data[key])
@@ -101,7 +95,6 @@ def create_partial_symmetries_graph(n, include_complete=False):
         edges.extend(edge1)
         edge2 = [max_edges - key] * len(partial_symmetries)
         edges.extend(edge2)
-        print(key, len(partial_symmetries))
         counts = np.bincount(partial_symmetries)
         plt.scatter(edge1, partial_symmetries, s=15 * counts[partial_symmetries])
         plt.scatter(edge2, partial_symmetries, s=15 * counts[partial_symmetries])

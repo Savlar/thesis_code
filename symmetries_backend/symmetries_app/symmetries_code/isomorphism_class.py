@@ -21,7 +21,7 @@ def check_if_isomorphic(graph, other):
         return False, None, checks
     for g in other:
         checks += 1
-        if g.is_isomorphic(graph.nx_rep):
+        if g.is_isomorphic(graph):
             return True, g, checks
     return False, None, checks
 
@@ -43,7 +43,7 @@ class IsomorphismClass:
         """
         uses vf2++ algorithm to check if the representative of this isomorphic class is isomorphic to 'other' graph
         """
-        return vf2pp_is_isomorphic(self.rep.nx_rep, other)
+        return self.rep.is_isomorphic(other)
 
     def add_isomorphic(self, item):
         self.graphs.append(item)
@@ -52,13 +52,17 @@ class IsomorphismClass:
         """
         creates the eggbox diagram for this isomorphism class
         """
-        for g1 in self.graphs:
+        vertices = [g.vertices() for g in self.graphs]
+        size = len(self.graphs)
+        for i in range(size):
             self.d_class.append([])
-            for g2 in self.graphs:
+            for j in range(size):
                 h_class = []
-                for mapping in vf2pp_all_isomorphisms(g2.nx_rep, g1.nx_rep):
-                    dom = tuple(mapping.keys())
-                    ran = tuple(mapping[key] for key in dom)
-                    print(dom, ran, mapping)
-                    h_class.append(str(PartialPermutation(dom, ran)))
-                self.d_class[-1].append({'data': h_class, 'is_group': set(g1.vertices()) == set(g2.vertices()) and len(h_class) > 1})
+                if i != j:
+                    for mapping in vf2pp_all_isomorphisms(self.graphs[j].nx_rep, self.graphs[i].nx_rep):
+                        h_class.append(str(PartialPermutation(list(mapping.keys()), list(mapping.values()))))
+                else:
+                    dom = vertices[j]
+                    for ran in self.graphs[i].aut_group:
+                        h_class.append(str(PartialPermutation(dom, ran)))
+                self.d_class[-1].append({'data': h_class, 'is_group': i == j and len(h_class) > 1})

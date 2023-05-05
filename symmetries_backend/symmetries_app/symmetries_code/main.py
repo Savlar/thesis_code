@@ -1,3 +1,7 @@
+import time
+
+from networkx import vf2pp_all_isomorphisms
+
 from symmetries_app.symmetries_code.graph import Graph
 from symmetries_app.symmetries_code.graph_generator import generate_random_graph
 from symmetries_app.symmetries_code.partial_symmetries import PartialSymmetries
@@ -37,3 +41,21 @@ def run(graph, only_full_symmetries=False, use_timer=False):
     global asymmetric_graphs
     p = PartialSymmetries(graph, only_full_symmetries, use_timer)
     yield from p.get_partial_symmetries()
+
+
+if __name__ == '__main__':
+    # g = Graph({1: {2, 3, 4}, 2: {1, 4}, 3: {1, 4}, 4: {1, 2, 3}})
+    # p = PartialSymmetries(g, only_full_symmetries=True)
+    # for sym in p.get_partial_symmetries():
+    #     print(sym)
+    for _ in range(30):
+        p = PartialSymmetries(generate_random_graph(11))
+        print(p.graph.density())
+        for _ in p.get_partial_symmetries():
+            pass
+        print(p.runtime)
+    # for key in asymmetric_graphs.keys():
+    #     p = PartialSymmetries(asymmetric_graphs[key])
+    #     for _ in p.get_partial_symmetries():
+    #         pass
+    #     print(p.runtime)
